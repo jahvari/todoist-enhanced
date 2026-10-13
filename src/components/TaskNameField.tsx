@@ -1,6 +1,6 @@
 import {
   createElement, useEffect, useLayoutEffect, useRef, useState,
-  type ChangeEvent, type ClipboardEvent, type KeyboardEvent, type MouseEvent, type MutableRefObject,
+  type FormEvent, type ClipboardEvent, type KeyboardEvent, type MouseEvent, type MutableRefObject,
   type SyntheticEvent,
 } from 'react';
 import { createPortal } from 'react-dom';
@@ -479,17 +479,20 @@ export function TaskNameField({
             onChange(value.slice(0, from) + flat + value.slice(to));
           });
         }),
-        onChange: (e: ChangeEvent<HTMLInputElement>) => {
+        // Extensions may set value directly before sending input. React's
+        // onChange can skip that event because its value tracker is already
+        // up to date; onInput still reads the correction into the draft.
+        onInput: (e: FormEvent<HTMLInputElement>) => {
           /* The refusals are positions in the text being edited, so they move
              with it before anything is read from it again. */
-          const next = e.target.value;
+          const next = e.currentTarget.value;
           const carried = carryRanges(refusals, value, next);
           if (carried.length !== refusals.length
             || carried.some((r, at) => r.start !== refusals[at].start)) {
             onRefusals(carried);
           }
           onChange(next);
-          track(e.target);
+          track(e.currentTarget);
         },
         onSelect: (e: SyntheticEvent<HTMLInputElement>) => track(e.currentTarget),
         onClick: (e: MouseEvent<HTMLInputElement>) => {

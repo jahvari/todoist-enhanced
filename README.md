@@ -300,8 +300,9 @@ npm test         # unit tests on the rules (Vitest)
 npm run e2e      # demo journeys in a browser (Playwright); add --headed to watch
 ```
 
-The journeys need Playwright's Chromium: `npx playwright install chromium`
-once on a new machine. GitHub runs lint, the typecheck, the unit tests and a build
+The journeys need Playwright's Chromium and Firefox: `npx playwright install chromium firefox`
+once on a new machine. Firefox runs the browser-extension text replacement checks.
+GitHub runs lint, the typecheck, the unit tests and a build
 on every push, and the journeys on every pull request.
 
 ### Self-hosting

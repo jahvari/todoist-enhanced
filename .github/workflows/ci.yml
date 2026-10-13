@@ -37,7 +37,7 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npx playwright install --with-deps chromium
+      - run: npx playwright install --with-deps chromium firefox
       - run: npx playwright test
       # Shared-project fixtures use Vite source modules and do not call Todoist.
       - name: Assignee scenarios

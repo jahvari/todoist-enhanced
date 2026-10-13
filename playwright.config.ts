@@ -10,8 +10,9 @@ const development = process.env.PLAYWRIGHT_DEV === '1';
  * End-to-end journeys on the demo account, which needs no token.
  *
  * They run against a production build served by `vite preview`, the closest
- * thing to what is uploaded. Chromium only: `npx playwright install chromium`
- * once on a new machine.
+ * thing to what is uploaded. Install Chromium and Firefox once on a new
+ * machine: `npx playwright install chromium firefox`. Firefox covers text
+ * replacements from browser extensions in the shared task-name field.
  */
 export default defineConfig({
   testDir: 'e2e',
@@ -30,6 +31,11 @@ export default defineConfig({
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
+    },
+    {
+      name: 'firefox',
+      testMatch: '**/extension-input.spec.ts',
+      use: { ...devices['Desktop Firefox'] },
     },
   ],
   webServer: {
